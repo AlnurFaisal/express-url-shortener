@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
+// load data
+const existingURLs = require("../data.js");
+// load our own helper functions
+const encode = require("../demo/encode");
 
-router.post("/shorten-url", function(req, res, next) {
+router.post("/", function(req, res, next) {
   const URL = req.body.url;
   const record = existingURLs.filter(existingURLs => existingURLs.url === URL);
   if (record.length !== 0) {
