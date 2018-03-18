@@ -17,6 +17,11 @@ describe("routes/books", () => {
   
       await URLmap.deleteMany().exec();
       await Counter.deleteMany().exec();
+      let counter = new Counter({_id: 'url_count', count: 10000});
+        counter.save(function(err) {
+            if(err) return console.error(err);
+            console.log('counter inserted');
+        });
     });
 
     it("GET /shorten-url should return all urls that are stored in database", async () => {

@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const URLmap = require("../models/urlmap.js");
+const URLmap = require("./models/urlmap.js");
 
 // load our own helper functions
 const decode = require("./demo/decode");

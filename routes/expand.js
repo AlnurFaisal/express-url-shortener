@@ -3,9 +3,6 @@ const mongoose = require("mongoose");
 const URLmap = require("../models/urlmap.js");
 const router = express.Router();
 
-// load data
-const existingURLs = require("../data.js");
-
 // load our own helper functions
 const decode = require("../demo/decode");
 

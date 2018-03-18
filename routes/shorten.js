@@ -29,9 +29,7 @@ router.post("/", async function(req, res, next) {
       } else {
           const hashURL = encode(URL, existingURLs);
           try {
-              const counter = await Counter.getNextSequence("counter");
               const myUrl = new URLmap({
-                id: counter,
                 url: URL,
                 hash: hashURL
               });
