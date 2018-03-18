@@ -11,19 +11,19 @@ describe("decode", () => {
     ];
   });
 
-  it("should retrieve decoded url of existing url", () => {
+  it.skip("should retrieve decoded url of existing url", () => {
     const actual = decode(existingURLs[0]["hash"], existingURLs);
     const expected = existingURLs[0]["url"];
     expect(actual).toEqual(expected);
   });
 
-  it("should throw Error for new/non-existing url", () => {
+  it.skip("should throw Error for new/non-existing url", () => {
     expect(() => {
       decode("www.new-webpage.com", existingURLs);
     }).toThrow();
   });
 
-  it("should always get same url for the same has", () => {
+  it.skip("should always get same url for the same has", () => {
     const actual_1 = decode(existingURLs[0]["hash"], existingURLs);
     const actual_2 = decode(existingURLs[0]["hash"], existingURLs);
     const expected = existingURLs[0]["url"];

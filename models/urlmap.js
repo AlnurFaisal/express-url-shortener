@@ -3,7 +3,6 @@ const Counter = require("./counter");
 const urlmapSchema = new mongoose.Schema({
     _id: {type: Number},
     url: String,
-    hash: String,
     created_at: {
         type: Date,
     }

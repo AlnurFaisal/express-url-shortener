@@ -23,17 +23,22 @@ app.get("/", function() {
   res.status(200).send(`How to use the URL Shortner`);
 });
 
-app.get("/:hash", async function(req, res) {
+app.get("/:hash", async function(req, res, next) {
   const getHash = req.params.hash;
   try {
-    const existingURLs = await URLmap.find({});
-    const getURL = await decode(getHash, existingURLs);
+    const getID = decode(getHash);
+    const getURL = await URLmap.findById(getID + 10000);
     console.log("Checking URL shortcode...");
-    res.redirect(`http://${getURL}`);
-  } catch (e) {
-    res.status(404).send({
-      message: `There is no long URL registered for hash value ${getHash}`
-    });
+    if(getURL){
+      res.redirect(`http://${getURL.url}`);
+    } else {
+      res.status(404).send({
+        message: `There is no long URL registered for hash value ${getHash}`
+      });   
+    }
+  } catch(e) {
+      console.log(e);
+      next(e);
   }
 });
 

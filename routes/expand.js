@@ -6,34 +6,31 @@ const router = express.Router();
 // load our own helper functions
 const decode = require("../demo/decode");
 
-router.get("/:hash", function(req, res) {
+router.get("/:hash", async function(req, res, next) {
   const getHash = req.params.hash;
-  // console.log(existingURLs);
+  const getID = decode(getHash);
   try {
-    const getURL = decode(getHash, existingURLs);
-    res.status(200).send({ url: getURL });
+    const record = await URLmap.findById(getID);
+    if(record){
+      res.status(200).send({ urlexpand: record, message: `Full url for ${getHash}.` });
+    } else {
+      res.status(404).send({ message: `URL with hash value ${getHash} does not exist.` });
+    }
   } catch (e) {
-    // console.log(e);
-    res.status(404).send({
-      message: `There is no long URL registered for hash value ${getHash}`
-    });
+    console.log(e);
+    next(e);
   }
 });
 
-router.delete("/:hash", function(req, res) {
+router.delete("/:hash", async function(req, res, next) {
   const getHash = req.params.hash;
-  const record = existingURLs.filter(
-    existingURLs => existingURLs.hash === getHash
-  );
-  if (record.length !== 0) {
-    existingURLs.splice(record[0].id - 1, 1);
-    res
-      .status(200)
-      .send({ message: `URL with hash value ${getHash} deleted successfully` });
-  } else {
-    res
-      .status(404)
-      .send({ message: `URL with hash value ${getHash} does not exist` });
+  const getID = decode(getHash);
+  try{
+    const record = await URLmap.findByIdAndRemove(getID);
+    res.status(200).send({ message: `URL with hash value ${getHash} deleted successfully.` });
+  } catch(e) {
+    console.log(e);
+    next(e);
   }
 });
 

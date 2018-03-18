@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const URLmap = require("../models/urlmap.js");
-const Counter = require("../models/counter.js");
 const router = express.Router();
 
 // load our own helper functions
@@ -25,17 +24,16 @@ router.post("/", async function(req, res, next) {
       const existingURLs = await URLmap.find({});
       const record = existingURLs.filter(existingURLs => existingURLs.url === URL);
       if (record.length !== 0) {
-        res.status(200).send({ url: record[0].hash });
+        res.status(200).send({ urlshorten: record[0], message: "URL is already saved and its shortcode already generated." });
       } else {
           const hashURL = encode(URL, existingURLs);
           try {
               const myUrl = new URLmap({
-                url: URL,
-                hash: hashURL
+                url: URL
               });
               const urlshorten = await myUrl.save();
               console.log("Saving and shortening url...");
-              res.status(200).send({ urlshorten: urlshorten,  message: "URL Shortened and saved to database" });
+              res.status(200).send({ urlshorten: hashURL,  message: "URL Shortened and saved to database." });
           } catch(err) {
               console.log(err);
               next(err);

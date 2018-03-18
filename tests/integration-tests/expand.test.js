@@ -6,6 +6,10 @@ const URLmap = require("../../models/urlmap");
 const Counter = require("../../models/counter");
 const mongoose = require("mongoose");
 
+const decode = require("../../demo/decode");
+
+let value;
+
 describe("routes/books", () => {
     let mongodb;
   
@@ -25,23 +29,37 @@ describe("routes/books", () => {
     });
 
     it("POST /shorten-url should create new url shortcode and save in database", async () => {
-        const URL = "www.yahoo.com.sg";
+        const URL = "www.google.com.sg";
         
         const response = await request(app).post("/shorten-url").send({ url: URL });
         expect(response.status).toEqual(200);
         expect(response.header["content-type"]).toContain("application/json");
         expect(response.body.message).toEqual("URL Shortened and saved to database.");
         expect(response.body.urlshorten).toBeDefined;
+        value = response.body.urlshorten;
     });
 
-    it("GET /shorten-url should return all urls that are stored in database", async () => {
-        const response = await request(app).get("/shorten-url");
+    it("GET /expand-url/:hash should return the hash url long address", async () => {
+        const getID = decode(value);
+        const findID = await URLmap.findById(getID);
+        const response = await request(app).get(`/expand-url/${value}`);
     
         expect(response.status).toEqual(200);
         expect(response.header["content-type"]).toContain("application/json");
-        expect(response.body).toBeDefined;
+        expect(response.body.message).toEqual(`Full url for ${value}.`);
+        expect(response.body.urlexpand).toBeDefined;
     });
-    
+
+    it("DELETE /expand-url/:hash should delete record and return a success message", async () => {
+        const getID = decode(value);
+        const findID = await URLmap.findByIdAndRemove(getID);
+        const response = await request(app).delete(`/expand-url/${value}`);
+
+        expect(response.status).toEqual(200);
+        expect(response.header["content-type"]).toContain("application/json");
+        expect(response.body.message).toEqual(`URL with hash value ${value} deleted successfully.`);
+    });
+
     afterAll(async () => {
         URLmap.deleteMany().exec();
         Counter.deleteMany().exec();

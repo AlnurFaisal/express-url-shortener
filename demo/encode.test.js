@@ -11,20 +11,20 @@ describe("encode", () => {
     ];
   });
 
-  it("should retrieve encoded id of existing url", () => {
+  it.skip("should retrieve encoded id of existing url", () => {
     const actual = encode(existingURLs[0]["url"], existingURLs);
     const expected = existingURLs[0]["hash"];
     expect(actual).toEqual(expected);
   });
 
-  it("should encode id for new/non-existing url", () => {
+  it.skip("should encode id for new/non-existing url", () => {
     const actual = encode("www.new-webpage.com", existingURLs);
     const expected = btoa(existingURLs.length + 1);
 
     expect(actual).toEqual(expected);
   });
 
-  it("should always get same hash for the same url", () => {
+  it.skip("should always get same hash for the same url", () => {
     const actual_1 = encode("www.new-webpage.com", existingURLs);
     const actual_2 = encode("www.new-webpage.com", existingURLs);
     const actual_3 = encode("www.new-webpage.com", existingURLs);
