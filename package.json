@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node server.js",
+    "start:nodemon": "modemon server.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -14,9 +15,13 @@
     "atob": "^2.0.3",
     "body-parser": "^1.18.2",
     "btoa": "^1.1.2",
-    "express": "^4.16.2"
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.10",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
-    "jest": "^22.4.2"
+    "jest": "^22.4.2",
+    "supertest": "^3.0.0"
   }
 }
