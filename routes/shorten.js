@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const URLmap = require("../models/urlmap.js");
+const URLmap = require("../models/urlmap");
+const Counter = require("../models/counter");
 const router = express.Router();
 
 // load our own helper functions
@@ -26,7 +27,7 @@ router.post("/", async function(req, res, next) {
       if (record.length !== 0) {
         res.status(200).send({ urlshorten: record[0], message: "URL is already saved and its shortcode already generated." });
       } else {
-          const hashURL = encode(URL, existingURLs);
+          const hashURL = encode(existingURLs);
           try {
               const myUrl = new URLmap({
                 url: URL
@@ -35,12 +36,12 @@ router.post("/", async function(req, res, next) {
               console.log("Saving and shortening url...");
               res.status(200).send({ urlshorten: hashURL,  message: "URL Shortened and saved to database." });
           } catch(err) {
-              console.log(err);
+              console.error(err);
               next(err);
           }
       }
   } catch(err){
-      console.log(err);
+      console.error(err);
       next(err);
   }
 });

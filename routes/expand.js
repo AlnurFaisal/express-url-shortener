@@ -17,7 +17,7 @@ router.get("/:hash", async function(req, res, next) {
       res.status(404).send({ message: `URL with hash value ${getHash} does not exist.` });
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     next(e);
   }
 });
@@ -29,7 +29,7 @@ router.delete("/:hash", async function(req, res, next) {
     const record = await URLmap.findByIdAndRemove(getID);
     res.status(200).send({ message: `URL with hash value ${getHash} deleted successfully.` });
   } catch(e) {
-    console.log(e);
+    console.error(e);
     next(e);
   }
 });

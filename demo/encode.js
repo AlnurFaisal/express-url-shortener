@@ -1,6 +1,6 @@
 const btoa = require("btoa");
 
-function encode(url, URLs) {
+function encode(URLs) {
   return btoa(URLs.length);
 }
 

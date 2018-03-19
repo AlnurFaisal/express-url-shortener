@@ -27,7 +27,7 @@ app.get("/:hash", async function(req, res, next) {
   const getHash = req.params.hash;
   try {
     const getID = decode(getHash);
-    const getURL = await URLmap.findById(getID + 10000);
+    const getURL = await URLmap.findById(getID);
     console.log("Checking URL shortcode...");
     if(getURL){
       res.redirect(`http://${getURL.url}`);
@@ -37,7 +37,7 @@ app.get("/:hash", async function(req, res, next) {
       });   
     }
   } catch(e) {
-      console.log(e);
+      console.error(e);
       next(e);
   }
 });

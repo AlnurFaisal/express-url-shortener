@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node server.js",
-    "start:nodemon": "modemon server.js",
+    "start:nodemon": "nodemon server.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },

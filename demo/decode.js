@@ -1,7 +1,8 @@
 const atob = require("atob");
 
 function decode(hash) {
-  id = atob(hash);
+  id = parseInt(atob(hash));
+  console.log(id);
   return id + 10000;
 }
 
