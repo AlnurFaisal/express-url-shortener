@@ -19,8 +19,22 @@ app.use("/expand-url", expandRouter);
 app.use("/shorten-url", shortenRouter);
 
 // TODO: Implement functionalities specified in README
-app.get("/", function() {
-  res.status(200).send(`How to use the URL Shortner`);
+app.get("/", function(err, req, res, next) {
+  if(err){
+    console.error(err);
+    next(err);
+  } else {
+    res.status(200).send(
+      `How to use the URL Shortner? Below are the steps:\n
+      1) Make sure you have applications like Postman or Insomnia installed so you can make POST request via JSON. \n
+      2) Launch either Postman or Insomnia and use the following url to make diffrent HTTP request as stated below: \n
+         - Submit new URL on the body via JSON to receieve a shortcode(POST): https://alnur-short-url.herokuapp.com/shorten-url\n
+         - Search for a particular shortcode if it exist(GET): https://alnur-short-url.herokuapp.com/expand-url/YOUR URL SHORTCODE\n
+         - Serach for all URL that is stored in the database(GET): https://alnur-short-url.herokuapp.com/shorten-url/\n
+         - Redirect to the correct website based on the correct URL shortcode provided(GET): https://alnur-short-url.herokuapp.com/YOUR URL SHORTCODE\n
+         - Delete URL from database by passing the URL shortcode(DELETE): https://alnur-short-url.herokuapp.com/expand-url/YOUR URL SHORTCODE`
+    );
+  }
 });
 
 app.get("/:hash", async function(req, res, next) {
@@ -30,7 +44,7 @@ app.get("/:hash", async function(req, res, next) {
     const getURL = await URLmap.findById(getID);
     console.log("Checking URL shortcode...");
     if(getURL){
-      res.redirect(`http://${getURL.url}`);
+      res.redirect(`${getURL.url}`);
     } else {
       res.status(404).send({
         message: `There is no long URL registered for hash value ${getHash}`

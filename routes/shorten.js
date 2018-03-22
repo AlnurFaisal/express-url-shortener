@@ -25,16 +25,18 @@ router.post("/", async function(req, res, next) {
       const existingURLs = await URLmap.find({});
       const record = existingURLs.filter(existingURLs => existingURLs.url === URL);
       if (record.length !== 0) {
-        res.status(200).send({ urlshorten: record[0], message: "URL is already saved and its shortcode already generated." });
-      } else {
-          const hashURL = encode(existingURLs);
-          try {
-              const myUrl = new URLmap({
-                url: URL
-              });
-              const urlshorten = await myUrl.save();
-              console.log("Saving and shortening url...");
-              res.status(200).send({ urlshorten: hashURL,  message: "URL Shortened and saved to database." });
+          res.status(200).send({ urlshorten: record[0], message: "URL is already saved and its shortcode already generated." });
+        } else {
+            try {
+                const counter = await Counter.findById('url_count');
+                console.log(counter.count);
+                const hashURL = encode(counter.count);
+                const myUrl = new URLmap({
+                    url: URL
+                });
+                const urlshorten = await myUrl.save();
+                console.log("Saving and shortening url...");
+                res.status(200).send({ urlshorten: hashURL,  message: "URL Shortened and saved to database." });
           } catch(err) {
               console.error(err);
               next(err);
