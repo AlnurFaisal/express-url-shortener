@@ -19,11 +19,7 @@ app.use("/expand-url", expandRouter);
 app.use("/shorten-url", shortenRouter);
 
 // TODO: Implement functionalities specified in README
-app.get("/", function(err, req, res, next) {
-  if(err){
-    console.error(err);
-    next(err);
-  } else {
+app.get("/", function(req, res) {
     res.status(200).send(
       `How to use the URL Shortner? Below are the steps:\n
       1) Make sure you have applications like Postman or Insomnia installed so you can make POST request via JSON. \n
@@ -34,7 +30,6 @@ app.get("/", function(err, req, res, next) {
          - Redirect to the correct website based on the correct URL shortcode provided(GET): https://alnur-short-url.herokuapp.com/YOUR URL SHORTCODE\n
          - Delete URL from database by passing the URL shortcode(DELETE): https://alnur-short-url.herokuapp.com/expand-url/YOUR URL SHORTCODE`
     );
-  }
 });
 
 app.get("/:hash", async function(req, res, next) {
